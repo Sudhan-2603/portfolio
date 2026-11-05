@@ -1,0 +1,524 @@
+/* ==========================================================================
+   About Section - Editorial Two-Column Style with Sticky 3D Avatar
+   Features sticky left avatar column, black bulleted paragraphs, black accents,
+   and dark capsule CTA button
+   ========================================================================== */
+
+.about-section {
+  padding: 6rem 1.5rem 4rem;
+  max-width: 1080px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  color: #000000;
+  position: relative;
+}
+
+
+/* 1. Header with side decorative horizontal rules: — About — */
+.about-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4.5rem;
+}
+
+.about-header-line {
+  height: 1.5px;
+  width: 65px;
+  background-color: #000000;
+  opacity: 0.8;
+}
+
+.about-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+/* 2. Main Two-Column Layout */
+.about-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: 4.5rem;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* 3. Left Column: Sticky 3D Character on Floating Cloud */
+.about-visual-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: sticky;
+  top: calc(var(--header-height, 70px) + 2rem);
+  align-self: flex-start;
+  height: fit-content;
+  padding-top: 1rem;
+  z-index: 10;
+}
+
+.about-avatar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  justify-content: center;
+  animation: cloudFloat 4.5s ease-in-out infinite;
+}
+
+.about-avatar-img {
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.08));
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+
+.about-avatar-wrapper:hover .about-avatar-img {
+  transform: scale(1.02);
+}
+
+@keyframes cloudFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 4. Right Column: Scrolling Narrative, Roles, Experience & Actions */
+.about-content-col {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.about-block {
+  margin-bottom: 2.25rem;
+}
+
+.about-heading {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 1.15rem 0;
+  letter-spacing: -0.01em;
+}
+
+/* Bulleted paragraphs in pure black with Character-by-Character Linear Left-to-Right Entry Animation */
+.about-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.about-bullet-item {
+  position: relative;
+  padding-left: 1.6rem;
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  line-height: 1.72;
+  color: #000000;
+  font-weight: 400;
+}
+
+.about-bullet-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #000000;
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.28s linear, transform 0.28s linear;
+  will-change: transform, opacity;
+}
+
+.about-bullet-list.animate-entry .about-bullet-item:nth-child(1)::before {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.05s;
+}
+
+.about-bullet-list.animate-entry .about-bullet-item:nth-child(2)::before {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.35s;
+}
+
+.about-bullet-list.animate-entry .about-bullet-item:nth-child(3)::before {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.65s;
+}
+
+.about-bullet-list.animate-entry .about-bullet-item:nth-child(4)::before {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.95s;
+}
+
+.about-bullet-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.about-bullet-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-18px);
+  will-change: transform, opacity;
+}
+
+.about-bullet-list.animate-entry .about-bullet-char {
+  animation: bulletCharLinearLeftToRight 0.26s linear forwards;
+}
+
+@keyframes bulletCharLinearLeftToRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 5. Two-Column Split: Left = Roles & Experience, Right = Social & Resume */
+.about-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.25rem;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.about-split-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-split-left .about-roles-group {
+  margin-bottom: 1.5rem;
+}
+
+.about-split-right .about-social-group {
+  margin-bottom: 1.5rem;
+}
+
+/* "I can play Roles :" Section */
+.about-roles-group {
+  margin-bottom: 1.75rem;
+}
+
+.about-roles-heading {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.about-roles-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.about-role-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 1.1rem;
+  background: #ffffff;
+  border: 1.5px solid #000000;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #000000;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  width: fit-content;
+}
+
+.about-role-chip:hover {
+  background: #000000;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.about-role-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.about-role-chip:hover .about-role-num {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* 6. Experience Block with Black Left Line (Placed Under Resume Group in about-bottom-group) */
+.about-experience-card {
+  margin: 0;
+  padding: 1.15rem 1.35rem;
+  background: #f8fafc;
+  border-left: 4px solid #000000;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  width: 100%;
+}
+
+.about-experience-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 0.4rem 0;
+}
+
+.about-experience-desc {
+  font-family: var(--font-sans);
+  font-size: 0.96rem;
+  color: #000000;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.about-exp-tag {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* 7. "Also view my projects on" Social Links with Rotating Circle Micro-interaction */
+.about-social-group {
+  margin-bottom: 0;
+}
+
+.about-social-heading {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.about-social-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.about-social-pills .social-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border-radius: 50% !important;
+  background: #ffffff;
+  border: 1.5px solid #000000 !important;
+  color: #000000;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.about-social-pills .social-icon-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #000000;
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease;
+}
+
+.about-social-pills .social-icon-circle svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+}
+
+/* Micro-interaction: circle rotates 360 degrees smoothly on hover */
+.about-social-pills .social-pill:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.about-social-pills .social-pill:hover .social-icon-circle {
+  transform: rotate(360deg);
+  color: #ffffff;
+}
+
+.about-social-pills .social-pill:hover .social-icon-circle svg {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* 8. Bottom Group Under Split Row: Resume Button and Experience Card */
+.about-bottom-group {
+  margin-top: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* Capsule CTA Button - Vibrant Signature Blue Style */
+.about-resume-group,
+.about-resume-wrap {
+  margin: 0;
+}
+
+.about-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 9999px;
+  background-color: #3D5EE1;
+  background: linear-gradient(135deg, #4f70f7 0%, #3D5EE1 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(61, 94, 225, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: all 0.25s ease;
+  user-select: none;
+  width: fit-content;
+}
+
+.about-resume-btn:hover {
+  background: linear-gradient(135deg, #3D5EE1 0%, #2947c9 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(61, 94, 225, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+.about-resume-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 6px 16px rgba(61, 94, 225, 0.3);
+}
+
+.about-resume-btn svg {
+  flex-shrink: 0;
+  stroke: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.about-resume-btn:hover svg {
+  transform: translateY(2px);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 920px) {
+  .about-container {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .about-visual-col {
+    position: static;
+    order: -1;
+  }
+
+  .about-content-col {
+    text-align: center;
+    align-items: center;
+  }
+
+  .about-bullet-list {
+    text-align: left;
+  }
+
+  .about-split-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-split-left,
+  .about-split-right {
+    align-items: center;
+  }
+
+  .about-roles-chips {
+    align-items: center;
+  }
+
+  .about-social-pills {
+    justify-content: center;
+  }
+
+  .about-resume-group,
+  .about-resume-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-bottom-group {
+    align-items: center;
+  }
+}

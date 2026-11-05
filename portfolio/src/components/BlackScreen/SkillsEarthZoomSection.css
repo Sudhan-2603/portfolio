@@ -1,0 +1,150 @@
+/* ==========================================================================
+   SkillsEarthZoomSection.css
+   Scroll-Driven Camera Zoom into Center Earth
+   Center Earth zooms in exponentially, engulfing the viewport in celestial atmosphere
+   From inside the zoomed Earth, the Certificates Scanner materializes
+   Strictly Zero Borders Rule (border: none !important)
+   ========================================================================== */
+
+/* 1. Track Container: 320vh scroll depth for entry, showcase & exit animation */
+.skills-earth-zoom-section {
+  position: relative;
+  width: 100%;
+  height: 320vh;
+  min-height: 2400px;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* Scroll navigation target anchor for navbar "Certifications" button */
+.cert-scroll-target {
+  position: absolute;
+  top: 65%;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 2. Pinned 100vh Sticky Viewport Stage */
+.skills-earth-zoom-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  border: none !important;
+  background: transparent;
+  user-select: none;
+}
+
+/* 3. Skills Ecosystem Zoom Layer */
+.skills-zoom-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: auto;
+  border: none !important;
+  will-change: transform, opacity;
+}
+
+/* 4. Hyperspace Earth Atmosphere Portal Flare
+   Radiant atmospheric flash that blooms as camera penetrates the Earth's core */
+.earth-zoom-portal-flare {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 18;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95) 0%, rgba(96, 165, 250, 0.8) 26%, rgba(61, 94, 225, 0.65) 52%, rgba(10, 15, 30, 0.95) 78%, transparent 100%);
+  mix-blend-mode: screen;
+  transition: opacity 0.15s ease-out;
+  border: none !important;
+}
+
+.portal-flare-core {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(147, 197, 253, 0.7) 45%, transparent 75%);
+  filter: blur(28px);
+  border: none !important;
+}
+
+.portal-flare-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: none !important;
+  box-shadow: 0 0 35px rgba(61, 94, 225, 0.8) inset, 0 0 50px rgba(147, 197, 253, 0.6);
+  pointer-events: none;
+}
+
+.portal-flare-ring.ring-1 {
+  width: 500px;
+  height: 500px;
+}
+
+.portal-flare-ring.ring-2 {
+  width: 800px;
+  height: 800px;
+}
+
+/* 5. Certificates Reveal Container
+   Scales up and materializes from the heart of the zoomed Earth */
+.certificates-zoom-reveal-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  opacity: 0;
+  transform: scale(0.88);
+  pointer-events: none;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  will-change: transform, opacity;
+  transition: opacity 0.25s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.certificates-zoom-reveal-wrap .certificates-scanner-section {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+@media (max-width: 768px) {
+  .skills-earth-zoom-section {
+    height: 200vh;
+    min-height: 1500px;
+  }
+}
+

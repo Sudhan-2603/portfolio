@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Main CSS Manifest
+   Aggregates modular section styles in cascade order
+   ========================================================================== */
+
+/* 1. Base Layer */
+@import './base/variables.css';
+@import './base/reset.css';
+@import './base/typography.css';
+
+/* 2. Layout Elements */
+@import './navbar/navbar.css';
+@import './footer/footer.css';
+@import './loading/loading.css';
+
+/* 3. Portfolio Sections */
+@import './hero/hero.css';
+@import './featured-work/featured-work.css';
+@import './about/about.css';
+@import './skills/skills.css';
+@import './certifications/certifications.css';
+@import './contact/contact.css';
+
+/* 4. GSAP Scroll Animations & Black Theme Transitions */
+@import './gsap/gsap.css';
+

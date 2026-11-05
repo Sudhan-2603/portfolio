@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sudhan — Meadow Footer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f1f1ee;
+      --ink: #0c0c0c;
+      --body: #6f6f6c;
+      --muted: #9c9c98;
+      --wordmark: #efefeb;
+      --mist: #e2e3f1; /* pale lavender the blue-hour meadow fades into */
+      --font: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { margin: 0; padding: 0; list-style: none; }
+
+    .footer {
+      --u: min(100vw / 1440, 100vh / 672);
+      --u: min(100vw / 1440, 100svh / 672);
+      position: relative;
+      height: 100vh;
+      height: 100svh;
+      background: var(--paper);
+      overflow: hidden;
+      isolation: isolate;
+      border: none !important;
+    }
+
+    /* Stage & Video */
+    .footer__stage {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border: none !important;
+    }
+    .footer__video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 100%;
+      transform: translateY(9%);
+      border: none !important;
+    }
+    .footer__stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, var(--paper) 0%, rgb(241 241 238 / .96) 26%, rgb(241 241 238 / .72) 44%, rgb(241 241 238 / 0) 70%);
+      pointer-events: none;
+      border: none !important;
+    }
+
+    /* Wordmark, frosted glass */
+    .footer__wordmark {
+      position: absolute;
+      left: 50%;
+      bottom: calc(-2 * var(--u));
+      transform: translateX(-50%);
+      z-index: 1;
+      margin: 0;
+      font-size: calc(390 * var(--u));
+      font-weight: 600;
+      line-height: .74;
+      letter-spacing: -0.045em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      color: rgb(232 234 250 / .4);
+      background: linear-gradient(to bottom, rgb(255 255 255 / .78), rgb(214 218 246 / .36) 48%, rgb(255 255 255 / .62));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 calc(-1 * var(--u)) 0 rgb(255 255 255 / .55)) drop-shadow(0 0 calc(18 * var(--u)) rgb(190 200 255 / .45));
+      border: none !important;
+    }
+
+    /* Fog */
+    .footer__fog {
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 2;
+      height: 17%;
+      pointer-events: none;
+      background: linear-gradient(to top, var(--mist) 0%, rgb(226 227 241 / .6) 30%, rgb(226 227 241 / 0) 100%);
+      border: none !important;
+    }
+
+    /* Tablet (768–1023px) */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .footer {
+        --u: min(100vw / 1040, 100svh / 672);
+      }
+      .footer__wordmark {
+        font-size: calc(286 * var(--u));
+        bottom: calc(10 * var(--u));
+      }
+    }
+
+    /* Mobile (<=767px) */
+    @media (max-width: 767px) {
+      .footer {
+        --u: 1px;
+        height: auto;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+      }
+      .footer__stage::after {
+        background: linear-gradient(to bottom, var(--paper) 0%, rgb(241 241 238 / .95) 50%, rgb(241 241 238 / .8) 68%, rgb(241 241 238 / 0) 90%);
+      }
+      .footer__wordmark {
+        bottom: 5vw;
+        font-size: 27vw;
+      }
+      .footer__fog {
+        height: 7%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <footer class="footer">
+    <div class="footer__stage" aria-hidden="true">
+      <video class="footer__video"
+        src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4d01c727-d9c5-47c8-a778-35a451ffd39f.mp4"
+        poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261014_121838_c97d0940-f430-4304-8573-4f47ee44f447.png"
+        autoplay muted loop playsinline preload="auto"></video>
+    </div>
+
+    <p class="footer__wordmark" aria-hidden="true">Sudhan</p>
+
+    <div class="footer__fog" aria-hidden="true"></div>
+  </footer>
+
+</body>
+</html>

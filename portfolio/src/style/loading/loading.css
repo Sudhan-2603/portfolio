@@ -1,0 +1,237 @@
+/* ==========================================================================
+   Loading Screen Style
+   Full-screen black background with Three.js 3D glass cube canvas
+   ========================================================================== */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Whiteout Flash Screen Transition */
+.loading-whiteout {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loading-whiteout.active {
+  opacity: 1;
+}
+
+.loading-canvas-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.loading-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Loading Overlay UI */
+.loading-ui {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: 4rem;
+  pointer-events: none;
+  width: 100%;
+  max-width: 480px;
+}
+
+.loading-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.loading-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.7));
+}
+
+.loader-letters {
+  display: flex;
+  gap: 0.12rem;
+  margin-top: 0.25rem;
+}
+
+.loader-letter {
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  opacity: 0;
+  transform: translateY(15px);
+  animation: revealLetter 0.4s ease-out forwards;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes revealLetter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-progress-bar-wrap {
+  width: 220px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.loading-progress-bar-fill {
+  height: 100%;
+  background: #ffffff;
+  border-radius: 999px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.95), 0 0 24px rgba(255, 255, 255, 0.6);
+}
+
+.loading-status-text {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: #ffffff;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Skip Button */
+.loading-skip-btn {
+  pointer-events: auto;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 20;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.loading-skip-btn:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================================================================
+   Responsive Adaptations for All Screen Sizes
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .loading-ui {
+    padding-bottom: 2.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .loading-skip-btn {
+    top: 1.25rem;
+    right: 1.25rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .loader-letter {
+    font-size: 1.3rem;
+    letter-spacing: 0.22em;
+  }
+
+  .loading-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .loading-progress-bar-wrap {
+    width: 180px;
+  }
+
+  .loading-status-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 400px) {
+  .loading-ui {
+    padding-bottom: 2rem;
+  }
+
+  .loader-letter {
+    font-size: 1.15rem;
+    letter-spacing: 0.18em;
+  }
+
+  .loading-progress-bar-wrap {
+    width: 150px;
+  }
+}
+
+@media (max-height: 550px) {
+  .loading-ui {
+    padding-bottom: 1.25rem;
+  }
+
+  .loading-brand {
+    margin-bottom: 0.6rem;
+    gap: 0.25rem;
+  }
+
+  .loader-letter {
+    font-size: 1.15rem;
+  }
+}
+

@@ -1,0 +1,497 @@
+/* ==========================================================================
+   DriftbarFooter.css
+   Recreate the Driftbar Meadow Footer (exact spec)
+   Pale paper top holding a brand block and three link columns,
+   looping video of a blue-hour meadow fading into paper,
+   giant frosted-glass "Driftbar" wordmark sinking into lavender fog at bottom.
+   Strictly Zero Borders Rule (border: none !important)
+   ========================================================================== */
+
+:root {
+  --paper: #f1f1ee;
+  --ink: #0c0c0c;
+  --body: #6f6f6c;
+  --muted: #9c9c98;
+  --wordmark: #efefeb;
+  --mist: #e2e3f1; /* pale lavender the blue-hour meadow fades into */
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.driftbar-footer-root {
+  --u: min(100vw / 1440, 100vh / 672);
+  --u: min(100vw / 1440, 100svh / 672);
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  overflow: hidden;
+  isolation: isolate;
+  border: none !important;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.driftbar-footer-root a {
+  color: inherit;
+  text-decoration: none;
+  border: none !important;
+}
+
+.driftbar-footer-root ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none !important;
+}
+
+/* 1. Stage and Video */
+.driftbar-footer-root .footer__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border: none !important;
+}
+
+.driftbar-footer-root .footer__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+  transform: translateY(9%);
+  border: none !important;
+}
+
+.driftbar-footer-root .footer__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--paper) 0%,
+    rgb(241 241 238 / 0.96) 26%,
+    rgb(241 241 238 / 0.72) 44%,
+    rgb(241 241 238 / 0) 70%
+  );
+  pointer-events: none;
+  border: none !important;
+}
+
+/* 2. Wordmark, Frosted Glass */
+.driftbar-footer-root .footer__wordmark {
+  position: absolute;
+  left: 50%;
+  bottom: calc(-2 * var(--u));
+  transform: translateX(-50%);
+  z-index: 1;
+  margin: 0;
+  font-size: calc(390 * var(--u));
+  font-weight: 600;
+  line-height: 0.74;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  color: rgb(232 234 250 / 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.78),
+    rgb(214 218 246 / 0.36) 48%,
+    rgb(255 255 255 / 0.62)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 calc(-1 * var(--u)) 0 rgb(255 255 255 / 0.55))
+         drop-shadow(0 0 calc(18 * var(--u)) rgb(190 200 255 / 0.45));
+  border: none !important;
+}
+
+/* 3. Fog */
+.driftbar-footer-root .footer__fog {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  height: 17%;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--mist) 0%,
+    rgb(226 227 241 / 0.6) 30%,
+    rgb(226 227 241 / 0) 100%
+  );
+  border: none !important;
+}
+
+/* 4. Content Grid */
+.driftbar-footer-root .footer__content {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: calc(440 * var(--u)) calc(240 * var(--u)) calc(240 * var(--u)) 1fr;
+  align-items: start;
+  width: calc(1440 * var(--u));
+  margin: 0 auto;
+  padding: calc(86 * var(--u)) calc(100 * var(--u)) 0 calc(160 * var(--u));
+  border: none !important;
+  box-sizing: border-box;
+}
+
+/* 5. Brand Block */
+.driftbar-footer-root .brand {
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  font-size: calc(17 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__mark {
+  position: relative;
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  border-radius: calc(8 * var(--u));
+  background: linear-gradient(to bottom, #2b2b2b, #0a0a0a 55%);
+  box-shadow: 0 calc(1 * var(--u)) calc(2 * var(--u)) rgb(0 0 0 / 0.25);
+  display: inline-block;
+  flex-shrink: 0;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__mark::after {
+  content: "";
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  bottom: 14%;
+  height: 19%;
+  border-radius: 999px;
+  background: #ffffff;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__title {
+  margin: calc(19 * var(--u)) 0 0 0;
+  font-size: calc(20 * var(--u));
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__text {
+  max-width: calc(412 * var(--u));
+  margin: calc(18 * var(--u)) 0 0 0;
+  color: var(--body);
+  font-size: calc(13.7 * var(--u));
+  line-height: 1.43;
+  letter-spacing: -0.012em;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  height: calc(32.5 * var(--u));
+  margin-top: calc(20 * var(--u));
+  padding: 0 calc(16 * var(--u)) 0 calc(15 * var(--u));
+  border-radius: calc(7 * var(--u));
+  background: #000000;
+  color: #ffffff !important;
+  font-size: calc(11.8 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+  cursor: pointer;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__cta:hover {
+  background: #262626;
+  transform: translateY(-1px);
+}
+
+.driftbar-footer-root .brand__cta svg {
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+  margin-top: calc(-1.5 * var(--u));
+  flex-shrink: 0;
+  fill: currentColor;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__copy {
+  margin: calc(23 * var(--u)) 0 0 0;
+  color: var(--muted);
+  font-size: calc(12.2 * var(--u));
+  letter-spacing: 0.01em;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__by {
+  display: flex;
+  align-items: center;
+  gap: calc(5 * var(--u));
+  margin: calc(21 * var(--u)) 0 0 0;
+  font-size: calc(11.8 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--body);
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__heart {
+  font-size: 0.95em;
+}
+
+.driftbar-footer-root .brand__author {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  margin-left: calc(5 * var(--u));
+  color: var(--ink);
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(23 * var(--u));
+  height: calc(23 * var(--u));
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e3e3e0;
+  flex-shrink: 0;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__avatar svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none !important;
+}
+
+.driftbar-footer-root .brand__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(8 * var(--u));
+  margin-top: calc(16 * var(--u));
+  list-style: none;
+  padding: 0;
+  border: none !important;
+}
+
+.driftbar-footer-root .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  height: calc(25 * var(--u));
+  padding: 0 calc(10 * var(--u));
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.55);
+  box-shadow: inset 0 0 0 1px rgb(12 12 12 / 0.12);
+  font-size: calc(10.8 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--ink);
+  border: none !important;
+}
+
+.driftbar-footer-root .chip svg {
+  width: calc(11 * var(--u));
+  height: calc(11 * var(--u));
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  border: none !important;
+}
+
+.driftbar-footer-root .chip__dot {
+  width: calc(6 * var(--u));
+  height: calc(6 * var(--u));
+  border-radius: 50%;
+  background: #2fb36a;
+  box-shadow: 0 0 0 calc(2.5 * var(--u)) rgb(47 179 106 / 0.18);
+  flex-shrink: 0;
+  border: none !important;
+}
+
+/* 6. Link Columns */
+.driftbar-footer-root .col {
+  border: none !important;
+}
+
+.driftbar-footer-root .col__title {
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  border: none !important;
+}
+
+.driftbar-footer-root .col__list {
+  display: grid;
+  gap: calc(20.5 * var(--u));
+  margin-top: calc(24 * var(--u));
+  font-size: calc(13.7 * var(--u));
+  line-height: 1.24;
+  letter-spacing: 0.022em;
+  color: #161616;
+  list-style: none;
+  padding: 0;
+  border: none !important;
+}
+
+.driftbar-footer-root .col--menu .col__list {
+  gap: calc(15 * var(--u));
+  margin-top: calc(21 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.driftbar-footer-root .col__list a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  border: none !important;
+}
+
+.driftbar-footer-root .col__list a:hover {
+  opacity: 0.55;
+}
+
+/* 7. Tablet (768–1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .driftbar-footer-root {
+    --u: min(100vw / 1040, 100svh / 672);
+  }
+  .driftbar-footer-root .footer__content {
+    grid-template-columns: calc(400 * var(--u)) calc(190 * var(--u)) calc(210 * var(--u)) 1fr;
+    width: calc(1040 * var(--u));
+    padding: calc(64 * var(--u)) calc(40 * var(--u)) 0;
+  }
+  .driftbar-footer-root .brand__text {
+    max-width: calc(350 * var(--u));
+  }
+  .driftbar-footer-root .footer__wordmark {
+    font-size: calc(286 * var(--u));
+    bottom: calc(10 * var(--u));
+  }
+}
+
+/* 8. Mobile (<=767px) */
+@media (max-width: 767px) {
+  .driftbar-footer-root {
+    --u: 1px;
+    height: auto;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .driftbar-footer-root .footer__stage::after {
+    background: linear-gradient(
+      to bottom,
+      var(--paper) 0%,
+      rgb(241 241 238 / 0.95) 50%,
+      rgb(241 241 238 / 0.8) 68%,
+      rgb(241 241 238 / 0) 90%
+    );
+  }
+  .driftbar-footer-root .footer__content {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-between;
+    column-gap: 12px;
+    row-gap: 36px;
+    width: 100%;
+    padding: 40px 20px 0;
+    margin-bottom: max(34vw, 150px);
+  }
+  .driftbar-footer-root .brand {
+    grid-column: 1 / -1;
+  }
+  .driftbar-footer-root .brand__title {
+    font-size: 21px;
+  }
+  .driftbar-footer-root .brand__text {
+    max-width: 34em;
+    font-size: 14px;
+  }
+  .driftbar-footer-root .brand__cta {
+    height: 38px;
+    padding: 0 18px 0 16px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .driftbar-footer-root .brand__cta svg {
+    width: 14px;
+    height: 14px;
+  }
+  .driftbar-footer-root .brand__copy,
+  .driftbar-footer-root .brand__by {
+    font-size: 12.5px;
+  }
+  .driftbar-footer-root .chip {
+    height: 28px;
+    font-size: 12px;
+  }
+  .driftbar-footer-root .col__title {
+    font-size: 15px;
+  }
+  .driftbar-footer-root .col__list,
+  .driftbar-footer-root .col--menu .col__list {
+    gap: 14px;
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .driftbar-footer-root .footer__wordmark {
+    bottom: 5vw;
+    font-size: 27vw;
+  }
+  .driftbar-footer-root .footer__fog {
+    height: 7%;
+  }
+}
+
+@media (max-width: 359px) {
+  .driftbar-footer-root .footer__content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .driftbar-footer-root .brand__cta,
+  .driftbar-footer-root .col__list a {
+    transition: none !important;
+  }
+}
+

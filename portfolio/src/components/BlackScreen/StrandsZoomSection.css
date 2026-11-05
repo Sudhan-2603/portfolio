@@ -1,0 +1,160 @@
+/* ==========================================================================
+   StrandsZoomSection.css
+   Scroll-Driven Camera Zoom from Top Angle into Full Screen White Background
+   Strictly Zero Borders Rule (border: none !important)
+   ========================================================================== */
+
+/* 1. Track Container: 250vh scroll depth for responsive scrub */
+.strands-zoom-section {
+  position: relative;
+  width: 100%;
+  height: 250vh;
+  min-height: 2000px;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* 2. Pinned 100vh Sticky Viewport Stage */
+.strands-zoom-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  background: transparent;
+  user-select: none;
+  border: none !important;
+}
+
+/* 3. 3D Camera Container: Starts at Top Angle, Zooms In on Scroll */
+.strands-camera-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  border: none !important;
+  z-index: 10;
+}
+
+.strands-orb-3d-wrap {
+  position: relative;
+  width: 580px;
+  height: 580px;
+  max-width: 90vw;
+  max-height: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transform: perspective(1000px) rotateX(54deg) translateY(-35px) scale(0.92);
+  border: none !important;
+  transition: transform 0.05s linear;
+}
+
+@media (max-width: 768px) {
+  .strands-orb-3d-wrap {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+/* 4. Full Screen Pure White Background Layer */
+.strands-white-fullscreen-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff !important;
+  z-index: 105;
+  opacity: 0;
+  pointer-events: none;
+  border: none !important;
+  transition: opacity 0.15s ease-out;
+}
+
+/* 5. Scroll Prompt Hint */
+.strands-scroll-hint {
+  position: absolute;
+  bottom: 2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  z-index: 15;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border: none !important;
+}
+
+.strands-scroll-hint-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3569fa;
+  box-shadow: 0 0 10px #3569fa;
+  animation: pulseDot 1.8s infinite ease-in-out;
+}
+
+.strands-scroll-hint svg {
+  animation: bounceHint 2s infinite ease-in-out;
+}
+
+@keyframes bounceHint {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* 6. Finale Reveal Content Overlay */
+.strands-finale-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 110;
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  border: none !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: opacity 0.3s ease-out, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 768px) {
+  .strands-finale-content {
+    transform: translateY(0);
+    padding-top: 0 !important;
+    border: none !important;
+  }
+}
+

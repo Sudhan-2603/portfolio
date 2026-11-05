@@ -1,0 +1,580 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap');
+
+/* ==========================================================================
+   CertificatesScanner.css
+   Interactive Belt Conveyor with Laser Scan Split & Twin Code Transition
+   Background completely removed for clean integration with Dark Theme
+   ========================================================================== */
+
+.certificates-scanner-section, .stage {
+  --bg: transparent;
+  --ink: #F0F4F8;
+  --body: #94A3B8;
+  --muted: #8E9AA8;
+  --code: #94A3B8;
+  --comment: #64748B;
+  --hot: #3D5EE1;
+  --hot-soft: #DDE5FF;
+  --cw: 46vw;
+  --ch: 52vh;
+  --gap: 34vw;
+  --top: calc(50vh - var(--ch) / 2 + 15px);
+
+  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  --serif: "Newsreader", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+@media (max-width: 767px) {
+  :root, .certificates-scanner-section, .stage {
+    --cw: 84vw;
+    --ch: 54vw;
+    --gap: 45vw;
+    --top: calc(50svh - var(--ch) / 2);
+  }
+}
+
+/* 1. Transparent Container & Stage (Background Removed) */
+.certificates-scanner-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 580px;
+  overflow: hidden;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0;
+  padding: 0;
+  transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+}
+
+/* Initial state before entry */
+.certificates-scanner-section .badge {
+  opacity: 0;
+  transform: translate(-50%, -24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.certificates-scanner-section .scan {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: 50% 50%;
+  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.certificates-scanner-section .belt {
+  opacity: 0;
+  transform: scale(0.88);
+  filter: blur(16px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Entry Animation (Active when section is in view) */
+.certificates-scanner-section.is-entered .badge {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition-delay: 0.1s;
+}
+
+.certificates-scanner-section.is-entered .scan,
+.certificates-zoom-reveal-wrap.is-visible .certificates-scanner-section .scan {
+  opacity: 1 !important;
+  transform: scaleY(1) !important;
+  transition-delay: 0.15s;
+  animation: scanLaserIgnite 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.certificates-scanner-section.is-entered .badge,
+.certificates-zoom-reveal-wrap.is-visible .certificates-scanner-section .badge {
+  opacity: 1 !important;
+  transform: translate(-50%, 0) !important;
+  transition-delay: 0.1s;
+}
+
+.certificates-scanner-section.is-entered .belt,
+.certificates-zoom-reveal-wrap.is-visible .certificates-scanner-section .belt {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: blur(0px) !important;
+  transition-delay: 0.2s;
+}
+
+@keyframes scanLaserIgnite {
+  0% {
+    transform: scaleY(0);
+    box-shadow: 0 0 0 0 rgba(61, 94, 225, 0);
+  }
+  50% {
+    transform: scaleY(1.05);
+    box-shadow: 0 0 25px 8px rgba(61, 94, 225, 1), 0 0 50px 20px rgba(61, 94, 225, 0.7);
+  }
+  100% {
+    transform: scaleY(1);
+    box-shadow: 0 0 10px 2px rgba(61, 94, 225, 0.9), 0 0 34px 10px rgba(61, 94, 225, 0.45);
+  }
+}
+
+/* Exit Animation (Active when user scrolls next past certificate section) */
+.certificates-scanner-section.is-exiting {
+  pointer-events: none !important;
+}
+
+.certificates-scanner-section.is-exiting .scan {
+  opacity: 0 !important;
+  transform: scaleY(0) !important;
+  filter: blur(8px) !important;
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+
+.certificates-scanner-section.is-exiting .badge {
+  opacity: 0 !important;
+  transform: translate(-50%, -30px) !important;
+  filter: blur(6px) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+}
+
+.certificates-scanner-section.is-exiting .belt {
+  opacity: 0 !important;
+  transform: scale(1.08) !important;
+  filter: blur(22px) !important;
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+              filter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cert-vanish-dots-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  overflow: visible;
+}
+
+.vanish-dot-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px #ffffff, 0 0 22px #3D5EE1, 0 0 35px rgba(147, 197, 253, 0.8);
+  opacity: 0;
+  animation: certDotParticleVanish 0.95s cubic-bezier(0.12, 0.88, 0.28, 1) forwards;
+  animation-delay: var(--dot-delay, 0s);
+}
+
+@keyframes certDotParticleVanish {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(calc(var(--dot-tx, 30px) * 0.4), calc(var(--dot-ty, -50px) * 0.4)) scale(calc(var(--dot-scale, 1) * 1.6));
+    box-shadow: 0 0 16px #ffffff, 0 0 30px #3D5EE1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dot-tx, 30px), var(--dot-ty, -50px)) scale(0);
+    filter: blur(3px);
+  }
+}
+
+.stage {
+  position: relative;
+  border: none !important;
+  inset: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* 2. Belt Conveyor Container */
+.belt {
+  position: absolute;
+  left: 0;
+  top: calc(var(--top) - 70px);
+  width: 100%;
+  height: calc(var(--ch) + 140px);
+  cursor: grab;
+  touch-action: pan-y;
+  z-index: 5;
+}
+
+.belt.grabbing {
+  cursor: grabbing;
+}
+
+/* 3. Stacked Layers */
+.codes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24vw);
+  mask-image: linear-gradient(90deg, transparent 0, #000 24vw);
+  z-index: 1;
+}
+
+.cards {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+canvas.fx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* 4. Code Twin Blocks (Revealed on Left Side of Scanner - ONLY text, no background box) */
+.code {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: var(--cw);
+  height: var(--ch);
+  white-space: pre;
+  overflow: hidden;
+  container-type: inline-size;
+  pointer-events: none;
+  will-change: transform, clip-path;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.code-html {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 1.56cqw;
+  line-height: 1.39;
+  color: var(--code);
+  width: 50%;
+  overflow: hidden;
+}
+
+.code-meta {
+  position: absolute;
+  left: 52%;
+  top: 0;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 1.56cqw;
+  line-height: 1.39;
+  color: var(--comment);
+  width: 46%;
+  overflow: hidden;
+}
+
+/* 5. Visual Certificate Cards Shell - Frosted Glass Background */
+.card {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: var(--cw);
+  height: var(--ch);
+  border-radius: 1.6vw;
+  border: none !important;
+  overflow: hidden;
+  color: #FFF;
+  font-family: var(--sans);
+  container-type: inline-size;
+  will-change: transform, clip-path;
+  user-select: none;
+  -webkit-user-select: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
+}
+
+.card-cert {
+  background: rgba(18, 24, 40, 0.45);
+  backdrop-filter: blur(50px) saturate(190%);
+  -webkit-backdrop-filter: blur(50px) saturate(190%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.card-cert-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 14, 25, 0.45) 0%, rgba(10, 14, 25, 0.25) 30%, rgba(5, 8, 16, 0.85) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card-cert-pdf {
+  background: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(54px) saturate(200%);
+  -webkit-backdrop-filter: blur(54px) saturate(200%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Shared Card Top Header */
+.k-nav {
+  position: absolute;
+  left: 4.4cqw;
+  right: 4.4cqw;
+  top: 4cqw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 6;
+}
+
+.k-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 1.3cqw;
+}
+
+.k-logo-img {
+  width: 4.8cqw;
+  height: 4.8cqw;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(61, 94, 225, 0.4));
+}
+
+.k-logo-mark {
+  width: 4.8cqw;
+  height: 3.8cqw;
+  stroke: #3D5EE1;
+  stroke-width: 3.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.k-logo-text {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 3.8cqw;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.k-menu {
+  display: flex;
+  align-items: center;
+  gap: 2.8cqw;
+  list-style: none;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 1.32cqw;
+  letter-spacing: 0.14em;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+.k-pill {
+  border: none !important;
+  border-radius: 9999px;
+  background: rgba(61, 94, 225, 0.35);
+  color: #DDE5FF;
+  padding: 0.7cqw 1.8cqw;
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Card Bottom Metadata & CTA Action */
+.card-cert-bottom {
+  position: absolute;
+  left: 4.4cqw;
+  right: 4.4cqw;
+  bottom: 4cqw;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 6;
+  gap: 2cqw;
+}
+
+.card-cert-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 68%;
+}
+
+.card-cert-num {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 1.35cqw;
+  letter-spacing: 0.08em;
+  color: #60a5fa;
+  margin-bottom: 0.5cqw;
+}
+
+.card-cert-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 4cqw;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 0.6cqw;
+}
+
+.card-cert-desc {
+  font-size: 1.6cqw;
+  color: rgba(240, 244, 248, 0.8);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.card-cert-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 1cqw 2.2cqw;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #0b1120;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1.45cqw;
+  text-decoration: none;
+  flex-shrink: 0;
+  border: none !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 20;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.card-cert-cta:hover {
+  background: #3D5EE1;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(61, 94, 225, 0.45);
+}
+
+/* 6. The Scanner Line */
+.scan {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--top) - 14px);
+  height: calc(var(--ch) + 40px);
+  width: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scan-core {
+  position: absolute;
+  left: -2px;
+  width: 4px;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #6884f5 0%, #3D5EE1 12%, #3D5EE1 88%, #6884f5 100%);
+  box-shadow: 0 0 10px 2px rgba(61, 94, 225, 0.9), 0 0 34px 10px rgba(61, 94, 225, 0.45);
+}
+
+.scan-halo {
+  position: absolute;
+  left: 0;
+  width: 42px;
+  top: 4%;
+  height: 92%;
+  background: linear-gradient(90deg, rgba(61, 94, 225, 0.6) 0%, transparent 100%);
+  filter: blur(6px);
+}
+
+/* 7. Counter Badge at Top */
+.badge {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--top) - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.badge-label {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  color: #94A3B8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-pill {
+  height: 28px;
+  border-radius: 9999px;
+  border: none !important;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(61, 94, 225, 0.35);
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.badge-num {
+  background: var(--hot);
+  color: #FFF;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.badge-pct {
+  background: var(--hot-soft);
+  color: #2244C8;
+  font-size: 11px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 767px) {
+  .codes {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 30vw);
+    mask-image: linear-gradient(90deg, transparent 0, #000 30vw);
+  }
+
+  .card-cert-title {
+    font-size: 4.8cqw;
+  }
+
+  .card-cert-desc {
+    display: none;
+  }
+
+  .card-cert-cta {
+    padding: 1cqw 1.8cqw;
+    font-size: 2cqw;
+  }
+}

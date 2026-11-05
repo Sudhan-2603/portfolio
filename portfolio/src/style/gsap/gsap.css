@@ -1,0 +1,884 @@
+/* ==========================================================================
+   GSAP Scroll-Triggered Circle Expansion & Black Theme Transition
+   Dedicated CSS file for GSAP animations and dark theme transition
+   ========================================================================== */
+
+/* 1. GSAP Pin Spacer & Border Accuracy
+   Eliminates all stray margins, paddings, and borders for pixel-perfect pinning */
+.pin-spacer {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  background-color: transparent !important;
+}
+
+.pin-spacer > .gsap-transition-section {
+  margin: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. Main GSAP Pinned Transition Section */
+.gsap-transition-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gsap-pinned-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+
+/* 3. Black Hole Gravitational Transition & Clockwise Orbiting Black Dots */
+.blackhole-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 40;
+  will-change: transform;
+}
+
+/* Gravitational Accretion Disk - Clean concentric halo with sharp circular boundary */
+.blackhole-accretion-disk {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.05) 60%, transparent 72%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  animation: blackhole-pulse 3s infinite ease-in-out alternate;
+}
+
+/* Precision Photon Ring - Crisp concentric circular boundary */
+.blackhole-photon-ring {
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1.2px solid rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  animation: spin-clockwise 24s linear infinite;
+}
+
+@keyframes blackhole-pulse {
+  0% {
+    transform: scale(0.97);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Container for Orbit Tracks */
+.blackhole-orbits-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Concentric Orbit Tiers - Crisp, accurate circular paths */
+.blackhole-orbit-tier {
+  position: absolute;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spin-clockwise 14s linear infinite;
+  will-change: transform;
+}
+
+.blackhole-orbit-tier.tier-0 {
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+.blackhole-orbit-tier.tier-1 {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.blackhole-orbit-tier.tier-2 {
+  border-color: rgba(0, 0, 0, 0.09);
+}
+
+.blackhole-orbit-tier.tier-3 {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Clockwise continuous rotation animation */
+@keyframes spin-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 2b. Gravitational Flood Vortex - Background shades rotating across the entire page */
+.blackhole-flood-vortex {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 175vmax;
+  height: 175vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 25;
+  will-change: transform;
+  /* Multi-layered spiral flood gradient shades */
+  background: 
+    radial-gradient(circle at center, transparent 12%, rgba(0, 0, 0, 0.04) 28%, transparent 68%),
+    conic-gradient(
+      from 0deg,
+      rgba(0, 0, 0, 0.13) 0deg,
+      transparent 38deg,
+      rgba(0, 0, 0, 0.2) 75deg,
+      transparent 118deg,
+      rgba(0, 0, 0, 0.15) 165deg,
+      transparent 212deg,
+      rgba(0, 0, 0, 0.24) 258deg,
+      transparent 302deg,
+      rgba(0, 0, 0, 0.13) 360deg
+    );
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.75) 55%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.75) 55%, transparent 75%);
+  animation: flood-swirl 28s linear infinite;
+}
+
+@keyframes flood-swirl {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Concentric ripples in the flood vortex */
+.blackhole-flood-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+  animation: ripple-pulse 6s infinite ease-in-out alternate;
+}
+
+.ripple-1 { width: 380px; height: 380px; animation-delay: 0s; }
+.ripple-2 { width: 560px; height: 560px; animation-delay: 1.5s; }
+.ripple-3 { width: 780px; height: 780px; animation-delay: 3s; }
+
+@keyframes ripple-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.96); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.04); opacity: 0.9; }
+}
+
+/* Orbiting Black Dots (#000000) with dynamic motion trail shades on backside */
+.blackhole-orbit-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  background-color: #000000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Motion shade streaming strictly from the backside of the clockwise moving dot */
+.dot-motion-shade {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 3.5px;
+  height: 32px;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.45) 40%, transparent 100%);
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(0.4px);
+  animation: shade-pulse 2s infinite ease-in-out alternate;
+}
+
+@keyframes shade-pulse {
+  0% {
+    height: 24px;
+    opacity: 0.8;
+  }
+  100% {
+    height: 36px;
+    opacity: 1;
+  }
+}
+
+/* Central Black Hole Singularity Event Horizon (#000000) - Razor-sharp, mathematically accurate circular edge */
+.gsap-black-circle {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50% !important;
+  background-color: #000000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  z-index: 45;
+  pointer-events: none;
+  box-sizing: border-box;
+  /* Clean, crisp edge definition - no fuzzy blur */
+  border: 1px solid #000000;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.95);
+  clip-path: circle(50% at 50% 50%);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  outline: 1px solid transparent;
+  will-change: transform;
+}
+
+/* Helper label that guides the user on scroll */
+.gsap-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666666;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 35;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.gsap-scroll-hint svg {
+  animation: bounce-indicator 1.8s infinite ease-in-out;
+}
+
+@keyframes bounce-indicator {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* 4. Deep Space Cosmos Starfield & Nebula System (Replaces Hero Text) */
+.blackhole-space-cosmos {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  background-color: #000000;
+  will-change: opacity;
+}
+
+/* Interstellar Nebulae Clouds */
+.cosmic-nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+.nebula-violet {
+  width: 650px;
+  height: 650px;
+  top: -15%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(126, 34, 206, 0.18) 50%, transparent 75%);
+  animation: nebula-drift 18s infinite ease-in-out alternate;
+}
+
+.nebula-cyan {
+  width: 700px;
+  height: 700px;
+  bottom: -20%;
+  left: -15%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.38) 0%, rgba(14, 116, 144, 0.15) 50%, transparent 75%);
+  animation: nebula-drift 22s infinite ease-in-out alternate-reverse;
+}
+
+.nebula-center {
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, transparent 65%);
+  animation: nebula-pulse 10s infinite ease-in-out;
+}
+
+@keyframes nebula-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 30px) scale(1.12); }
+}
+
+@keyframes nebula-pulse {
+  0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.95); }
+  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Starfield Grid */
+.space-starfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.space-star {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #ffffff;
+  pointer-events: none;
+  animation: star-twinkle 3s infinite ease-in-out;
+}
+
+.space-star.star-glow {
+  box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.9), 0 0 16px 2px rgba(168, 85, 247, 0.45);
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+/* Shooting Stars gliding across the cosmos */
+.shooting-star {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(56, 189, 248, 0.6), transparent);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+  animation: shoot 7s infinite ease-in;
+  opacity: 0;
+}
+
+.shooting-star.star-1 {
+  top: 18%;
+  left: 65%;
+  width: 110px;
+  transform: rotate(-35deg);
+  animation-delay: 2s;
+}
+
+.shooting-star.star-2 {
+  top: 45%;
+  left: 30%;
+  width: 140px;
+  transform: rotate(-40deg);
+  animation-delay: 5.5s;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: rotate(-35deg) translateX(0);
+  }
+  5% {
+    opacity: 1;
+  }
+  15% {
+    opacity: 0;
+    transform: rotate(-35deg) translateX(-280px);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Minimalist scroll cue in deep space */
+.space-scroll-cue {
+  position: absolute;
+  bottom: 2.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.space-scroll-cue svg {
+  animation: bounce-indicator 1.8s infinite ease-in-out;
+}
+
+/* ==========================================================================
+   5. Horizontal Scroll Projects Section
+   Replaces Experience section; activates when black hole fills full screen
+   ========================================================================== */
+
+.projects-horizontal-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  margin-top: -1px;
+}
+
+.projects-horizontal-sticky {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+}
+
+/* Atmospheric Cosmic Glows inside horizontal projects */
+.projects-bg-nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.projects-bg-nebula.nebula-1 {
+  width: 650px;
+  height: 650px;
+  top: -10%;
+  left: 20%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, transparent 70%);
+}
+
+.projects-bg-nebula.nebula-2 {
+  width: 700px;
+  height: 700px;
+  bottom: -15%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, transparent 70%);
+}
+
+/* The Horizontal Scrolling Track */
+.projects-horizontal-track {
+  display: flex;
+  align-items: center;
+  gap: 2.75rem;
+  padding: 0 8vw;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Slide 0: Bold Editorial Introduction Slide */
+.project-slide-intro {
+  min-width: 360px;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.intro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #c084fc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.badge-glow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #a855f7;
+  box-shadow: 0 0 10px #a855f7;
+}
+
+.intro-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 5vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+}
+
+.intro-title .accent-gradient {
+  background: linear-gradient(135deg, #a855f7 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-desc {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.intro-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.intro-scroll-hint svg {
+  animation: slide-right-hint 2s infinite ease-in-out;
+}
+
+@keyframes slide-right-hint {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+/* Individual Project Slide Cards */
+.project-slide-card {
+  width: 440px;
+  height: min(600px, 80vh);
+  background: rgba(20, 20, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 26px;
+  padding: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  backdrop-filter: blur(24px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.project-slide-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 28px 60px -10px rgba(168, 85, 247, 0.22);
+}
+
+/* Top Meta: Number + Category Badge */
+.card-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.card-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.08em;
+}
+
+.card-category-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #38bdf8;
+}
+
+/* Card Visual Banner Art */
+.card-visual-banner {
+  width: 100%;
+  height: 190px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.visual-purple {
+  background: radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.4) 0%, rgba(126, 34, 206, 0.15) 60%, rgba(10, 10, 15, 0.95) 100%);
+}
+
+.visual-cyan {
+  background: radial-gradient(circle at 30% 70%, rgba(56, 189, 248, 0.4) 0%, rgba(14, 116, 144, 0.15) 60%, rgba(10, 10, 15, 0.95) 100%);
+}
+
+.visual-indigo {
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.4) 0%, rgba(67, 56, 202, 0.15) 60%, rgba(10, 10, 15, 0.95) 100%);
+}
+
+.visual-amber {
+  background: radial-gradient(circle at 70% 60%, rgba(245, 158, 11, 0.35) 0%, rgba(180, 83, 9, 0.15) 60%, rgba(10, 10, 15, 0.95) 100%);
+}
+
+.visual-emerald {
+  background: radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.35) 0%, rgba(4, 120, 87, 0.15) 60%, rgba(10, 10, 15, 0.95) 100%);
+}
+
+.banner-icon-badge {
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  margin-bottom: 0.6rem;
+  transition: transform 0.3s ease;
+}
+
+.project-slide-card:hover .banner-icon-badge {
+  transform: scale(1.1);
+}
+
+.banner-badge-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.05em;
+}
+
+/* Card Body Content */
+.card-body-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-project-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.card-project-desc {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+/* Tech Stack Tags */
+.card-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-tech-tag {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Card Action Links */
+.card-action-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.card-btn-primary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card-btn-primary:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.card-btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.card-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments for horizontal slide */
+@media (max-width: 640px) {
+  .project-slide-card {
+    width: 320px;
+    height: min(540px, 82vh);
+    padding: 1.35rem;
+  }
+
+  .card-visual-banner {
+    height: 150px;
+  }
+}
+
+/* ==========================================================================
+   6. Remove Navbar when in Horizontal Projects Scroll
+   ========================================================================== */
+body.hide-navbar .navbar {
+  transform: translateY(-115%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+}
+
+
+/* Dynamic Dark Mode adjustments to Navbar when black theme is active */
+
+body.dark-theme-active .navbar {
+  background: rgba(10, 10, 10, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme-active .navbar-logo span {
+  color: #ffffff;
+}
+
+body.dark-theme-active .navbar-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark-theme-active .navbar-link:hover {
+  color: #ffffff;
+}
+
+body.dark-theme-active .navbar-action-link {
+  color: #ffffff;
+}
+
+body.dark-theme-active .navbar-btn-outline {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme-active .navbar-btn-outline:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+body.dark-theme-active .toggle-bar {
+  background-color: #ffffff;
+}

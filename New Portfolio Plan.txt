@@ -1,0 +1,63 @@
+New Portfolio Plan
+
+1.Structure
+	 Hero -> Featured Work -> About Me -> Experience ->Skill& Tool -> Certifications -> Contact
+
+Featured Projects 
+	1.Open Sources ->Day, Youtify
+	2.Normal Project -> Ticketify, Skool ERP
+	2.Design -> College ERP, Fity
+	3.Programming -> Bank Management Sysytem , Message
+
+2.Tech Stacks
+	
+	React + GSAP + Three.JS [ Some places ] + motion site
+
+3.Experience [ Responsibilities & Outcomes ]
+	1.Company work
+4. Skills [ Grouped Professional competencies ]
+	1.Programming -> C,CPP,JAVA, [MERN Stack ]
+	2.Frontend -> React,GSAP,three.js
+	3.Zoho Products ->Zoho CRM, People, Site, Creator, Catalyst, Landing Page
+	4.Tools -> Firebase, MySQL, Wix,Figma
+
+5.Certification
+	1.Samsung certificate
+	2.Google Hack2skills
+	3.Zoho CRM & Style UI
+	4.Course certificate -> Figma, Flutter, DBMS 
+6.Contact
+	1.Linkedin
+	2.Githhub
+	3.Mobile no
+	4.mail ID
+
+Contents :
+1.Home Page -> We don't just Think. We do.
+	Developments ->web, App, UI/UX, Unity\
+2.About -> 
+	Innovative and user-centric UI/UX Designer and Web/App Developer bridging the gap between design concepts and functional code.
+
+	Proficient in crafting intuitive user experiences through high-fidelity wireframing and prototyping in Figma.
+ 	
+	Experienced in seamlessly translating designs into high-performing digital products using Visual Studio and GitHub.
+
+	Adept at leveraging Zoho Creator, Zoho CRM, Zoho Catalyst  and Zoho products to develop responsive web and mobile applications, automate business workflows, streamline customer relationship management, and deliver scalable, user-friendly digital solutions within the Zoho ecosystem.
+
+I can play Roles :
+1.Web / Mobile App Development
+2.Zoho Products
+3.Ui/UX Design
+
+Experience : Flinthin - CRM Intern [ automation ]
+
+3.Skiils & Tools 
+	1.HTML,CSS & JS
+	2.MERN Stack
+	3.Flutter
+	4.C,C++,Java
+	5.SQL
+	6.Three.JS, GSAP
+Tools : 
+
+Figma, Firebase, Wix, Zoho CRM, Creator, Catalyst 
