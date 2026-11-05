@@ -163,10 +163,65 @@ export default function LoadingScreen({ onComplete }) {
     const particles = new THREE.Points(particleGeom, particleMat);
     scene.add(particles);
 
-    // 9. Load reflection_cube.glb
+    // 9. Instant Photorealistic Procedural Reflection Crystal Cube
+    const procCubeGroup = new THREE.Group();
+
+    // Outer crystal glass shell with optical refraction and studio reflections
+    const outerGeom = new THREE.BoxGeometry(0.96, 0.96, 0.96);
+    const outerMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      metalness: 0.05,
+      roughness: 0.04,
+      transmission: 0.92,
+      thickness: 1.1,
+      ior: 1.52,
+      reflectivity: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04,
+      transparent: true,
+      opacity: 0.95,
+      envMapIntensity: 2.2,
+    });
+    const outerMesh = new THREE.Mesh(outerGeom, outerMat);
+    outerMesh.castShadow = true;
+    outerMesh.receiveShadow = true;
+    procCubeGroup.add(outerMesh);
+
+    // Inner floating chromatic gemstone core
+    const innerGeom = new THREE.OctahedronGeometry(0.42, 0);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0x3b82f6,
+      metalness: 0.92,
+      roughness: 0.12,
+      emissive: 0x1d4ed8,
+      emissiveIntensity: 0.35,
+      envMapIntensity: 2.0,
+    });
+    const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+    procCubeGroup.add(innerMesh);
+
+    // Subtle luminous crystal edge outlines
+    const edgesGeom = new THREE.EdgesGeometry(outerGeom);
+    const edgesMat = new THREE.LineBasicMaterial({
+      color: 0x60a5fa,
+      transparent: true,
+      opacity: 0.45,
+    });
+    const edgesMesh = new THREE.LineSegments(edgesGeom, edgesMat);
+    procCubeGroup.add(edgesMesh);
+
+    // Mount immediately so the 3D model is visible from frame 0
+    cubeGroup.add(procCubeGroup);
+    animStateRef.current.procCube = procCubeGroup;
+    animStateRef.current.innerMesh = innerMesh;
+    animStateRef.current.modelLoaded = true;
+
+    // Asynchronously load reflection_cube.glb and smoothly swap if ready
     const gltfLoader = new GLTFLoader();
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const gltfUrl = baseUrl.endsWith('/') ? `${baseUrl}reflection_cube.glb` : `${baseUrl}/reflection_cube.glb`;
     gltfLoader.load(
-      '/reflection_cube.glb',
+      gltfUrl,
       (gltf) => {
         const model = gltf.scene;
 
@@ -183,7 +238,6 @@ export default function LoadingScreen({ onComplete }) {
         model.position.z = -center.z;
 
         // Normalize base geometry to a clean unit cube (~1.0 unit)
-        // Group scale then controls the elegant, responsive display size
         const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
         const normScale = 1.05 / maxDim;
         model.scale.set(normScale, normScale, normScale);
@@ -207,13 +261,16 @@ export default function LoadingScreen({ onComplete }) {
           }
         });
 
+        // Swap procedural cube with GLB model once loaded
+        if (animStateRef.current.procCube && cubeGroup) {
+          cubeGroup.remove(animStateRef.current.procCube);
+        }
         cubeGroup.add(model);
         animStateRef.current.model = model;
-        animStateRef.current.modelLoaded = true;
       },
       undefined,
       (err) => {
-        console.error('Error loading reflection_cube.glb:', err);
+        console.warn('GLB load fallback to procedural reflection cube:', err);
       }
     );
 
@@ -251,6 +308,12 @@ export default function LoadingScreen({ onComplete }) {
       if (state.phase === 'rotating') {
         // Continuous smooth cube rotation
         cubeGroup.rotation.y += delta * 0.95;
+
+        // Counter-rotate inner crystal gemstone
+        if (state.innerMesh) {
+          state.innerMesh.rotation.y -= delta * 0.65;
+          state.innerMesh.rotation.x += delta * 0.45;
+        }
 
         // Subtle organic levitation breath around responsive basePosY
         const targetPosY = (state.basePosY || 0.08) + Math.sin(time * 2.2) * 0.035;
