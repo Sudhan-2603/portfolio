@@ -447,7 +447,7 @@ export default function App() {
 
                             {/* Subtitle Description */}
                             <p className="hero-subtitle-text">
-                                Innovative and user-centric UI/UX Designer and Web/App Developer bridging the gap between design concepts and functional code. Building scalable, intuitive digital solutions.
+                                Sudharsan K is a UI/UX designer and frontend developer creating intuitive digital products with Figma and React—from thoughtful interface design to responsive web experiences.
                             </p>
 
                             {/* Hero CTA Button: Only "Explore my project" */}
