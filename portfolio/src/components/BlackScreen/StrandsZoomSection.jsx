@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import './StrandsZoomSection.css';
 import Strands from '../ui/Strands';
+import { getScrollBehavior } from '../../lib/utils';
 import GetInTouchSection from './GetInTouchSection';
 
 /**
@@ -113,9 +114,9 @@ export default function StrandsZoomSection({ scrollContainerRef, onScrollToTop }
     if (onScrollToTop) {
       onScrollToTop();
     } else if (scrollContainerRef?.current) {
-      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: getScrollBehavior() });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: getScrollBehavior() });
     }
   };
 

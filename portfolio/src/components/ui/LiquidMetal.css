@@ -32,6 +32,11 @@
   transform: scale(0.97);
 }
 
+.liquid-metal-btn-wrap:focus-visible {
+  outline: 3px solid #3d5ee1;
+  outline-offset: 4px;
+}
+
 .liquid-metal-btn-wrap:disabled {
   opacity: 0.5;
   cursor: not-allowed;

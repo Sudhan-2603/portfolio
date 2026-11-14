@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './WhiteHoleSection.css';
 import logoImg from '../../assets/Logo-trans.png';
+import { getScrollBehavior } from '../../lib/utils';
 import resumePdf from '../../assets/certificate/resume.PDF';
 
 /**
@@ -116,9 +117,9 @@ export default function WhiteHoleSection({ scrollContainerRef, onScrollToTop }) 
     }
     const container = scrollContainerRef?.current;
     if (container) {
-      container.scrollTo({ top: 0, behavior: 'smooth' });
+      container.scrollTo({ top: 0, behavior: getScrollBehavior() });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: getScrollBehavior() });
     }
   };
 

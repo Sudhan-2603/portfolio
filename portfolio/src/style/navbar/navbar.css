@@ -47,19 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: grab;
   user-select: none;
-  touch-action: none;
-  transition: border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  position: relative;
-}
-
-.logo-badge:active,
-.logo-badge.dragging {
-  border-radius: 50% !important;
-  cursor: grabbing;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  z-index: 9999;
 }
 
 .logo-badge img {
@@ -67,25 +55,6 @@
   height: 26px;
   object-fit: contain;
   pointer-events: none;
-  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.navbar-logo:hover .logo-badge img,
-.logo-badge:hover img {
-  transform: rotate(360deg);
-}
-
-.logo-badge.dragging img {
-  animation: logoSpinClockwise 1.6s linear infinite;
-}
-
-@keyframes logoSpinClockwise {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .navbar-links {
@@ -251,14 +220,19 @@
   padding: 1.25rem 2rem 1.75rem;
   transform: translateY(-8px);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.3s;
 }
 
 .navbar-mobile-menu.open {
   transform: translateY(0);
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transition-delay: 0s;
 }
 
 .navbar-mobile-nav {

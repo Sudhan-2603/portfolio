@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/Logo-trans.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Explore the portfolio of Sudharsan K, a UI/UX designer and frontend developer crafting intuitive digital products with Figma, React, and thoughtful web design." />
+  <meta name="description" content="Sudharsan K is a UI/UX designer and frontend developer who turns Figma flows into responsive React interfaces. Explore selected product design and web projects." />
   <meta name="author" content="Sudharsan K" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#0b0b0d" />
@@ -14,16 +14,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Sudharsan K Portfolio" />
   <meta property="og:title" content="Sudharsan K — UI/UX Designer &amp; Frontend Developer" />
-  <meta property="og:description" content="Explore selected UI/UX design and frontend development work by Sudharsan K." />
+  <meta property="og:description" content="UI/UX designer and frontend developer turning Figma flows into responsive React interfaces. Explore selected design and web projects." />
   <meta property="og:url" content="https://sudhan.website/" />
-  <meta property="og:image" content="https://sudhan.website/og-image.svg" />
+  <meta property="og:image" content="https://sudhan.website/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Sudharsan K — UI/UX Designer and Frontend Developer portfolio" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Sudharsan K — UI/UX Designer &amp; Frontend Developer" />
-  <meta name="twitter:description" content="Explore selected UI/UX design and frontend development work by Sudharsan K." />
-  <meta name="twitter:image" content="https://sudhan.website/og-image.svg" />
+  <meta name="twitter:description" content="UI/UX designer and frontend developer turning Figma flows into responsive React interfaces. Explore selected design and web projects." />
+  <meta name="twitter:image" content="https://sudhan.website/og-image.png" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -59,9 +60,111 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+  <style>
+    #portfolio-prerender {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      overflow: auto;
+      background: #fff;
+      color: #0b0b0d;
+      font: 16px/1.6 "Plus Jakarta Sans", Arial, sans-serif;
+    }
+
+    #portfolio-prerender * {
+      box-sizing: border-box;
+    }
+
+    #portfolio-prerender header,
+    #portfolio-prerender main {
+      width: min(100% - 2rem, 1120px);
+      margin: 0 auto;
+    }
+
+    #portfolio-prerender header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 76px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    #portfolio-prerender a {
+      color: #172554;
+      font-weight: 700;
+    }
+
+    #portfolio-prerender section {
+      padding: clamp(2.5rem, 8vw, 6rem) 0;
+    }
+
+    #portfolio-prerender h1 {
+      max-width: 850px;
+      margin: 1rem 0;
+      font: 500 clamp(2.5rem, 8vw, 5rem)/1.05 Georgia, serif;
+      letter-spacing: -0.04em;
+    }
+
+    #portfolio-prerender h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    #portfolio-prerender p,
+    #portfolio-prerender li {
+      max-width: 680px;
+      color: #374151;
+    }
+
+    #portfolio-prerender .pre-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    #portfolio-prerender .pre-primary {
+      padding: 0.75rem 1.25rem;
+      border-radius: 999px;
+      background: #0b0b0d;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #portfolio-prerender {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div id="portfolio-prerender">
+    <header>
+      <a href="#portfolio-prerender">Sudhan</a>
+      <a href="mailto:sudharsan@sudhan.website">Email Sudharsan</a>
+    </header>
+    <main>
+      <section aria-labelledby="pre-hero-title">
+        <p>UI/UX Designer + Frontend Developer · Open to opportunities</p>
+        <h1 id="pre-hero-title">I design and build responsive web products.</h1>
+        <p>I turn Figma flows into responsive React interfaces, bringing product design and frontend implementation together.</p>
+        <div class="pre-cta">
+          <a class="pre-primary" href="#pre-selected-work">View selected work</a>
+          <a href="mailto:sudharsan@sudhan.website">Email me</a>
+        </div>
+      </section>
+      <section id="pre-selected-work" aria-labelledby="pre-work-title">
+        <h2 id="pre-work-title">Selected work</h2>
+        <ul>
+          <li>Ticketify — event ticketing, booking, and QR validation with the MERN stack.</li>
+          <li>Skool ERP — a school grading and attendance portal built with React and Firebase.</li>
+          <li>Campay — a Figma design system for the university academic lifecycle.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

@@ -3,11 +3,12 @@ import './BlackScreenContent.css';
 import SkillsEcosystem from './SkillsEcosystem';
 import CertificatesScanner from './CertificatesScanner';
 import StrandsZoomSection from './StrandsZoomSection';
+import { getScrollBehavior } from '../../lib/utils';
 
 import dayLogo from '../../assets/Day-logo.png';
 import youtifyLogo from '../../assets/Youtify-logo.png';
 import ticketifyImg from '../../assets/Ticketify.png';
-import skoolErpImg from '../../assets/Skool-Erp.png';
+import skoolErpImg from '../../assets/Skool-Erp.jpg';
 import campayImg from '../../assets/Campay.png';
 import logoImg from '../../assets/Logo-trans.png';
 import resumePdf from '../../assets/certificate/resume.PDF';
@@ -26,6 +27,10 @@ const PROJECTS_DATA = [
         title: 'Day',
         categoryBadge: 'Open Source',
         tagline: 'Open-source daily habit & activity matrix tracker',
+        problem: 'Daily habit logs are difficult to scan over time.',
+        role: 'Product design + frontend',
+        approach: 'Built an activity matrix with React and Vite.',
+        outcome: 'An open-source tracker for habits and activity.',
         spec1: 'React · Vite',
         spec2: 'Web App',
         pillTag: 'Free & Open',
@@ -40,6 +45,10 @@ const PROJECTS_DATA = [
         title: 'Youtify',
         categoryBadge: 'Open Source',
         tagline: 'Ad-free YouTube & streaming music audio client',
+        problem: 'Listening should not be interrupted by ad-heavy flows.',
+        role: 'Frontend development',
+        approach: 'Built a focused React audio client.',
+        outcome: 'An open-source client for video and music audio.',
         spec1: 'React · Audio',
         spec2: 'Media App',
         pillTag: 'Open Audio',
@@ -54,6 +63,10 @@ const PROJECTS_DATA = [
         title: 'Ticketify',
         categoryBadge: 'Web App',
         tagline: 'Event ticketing, QR validation & booking platform',
+        problem: 'Booking and event entry need one connected flow.',
+        role: 'Full-stack development',
+        approach: 'Built ticket booking and QR validation with MERN.',
+        outcome: 'A web platform for booking and ticket validation.',
         spec1: 'MERN Stack',
         spec2: 'Full-Stack',
         pillTag: 'Production',
@@ -68,6 +81,10 @@ const PROJECTS_DATA = [
         title: 'Skool ERP',
         categoryBadge: 'Enterprise SaaS',
         tagline: 'All-in-one school grading & attendance portal',
+        problem: 'Grading and attendance need a shared school workflow.',
+        role: 'Frontend development',
+        approach: 'Built the school portal with React and Firebase.',
+        outcome: 'One portal for grades and attendance.',
         spec1: 'React · Firebase',
         spec2: 'SaaS ERP',
         pillTag: 'Cloud ERP',
@@ -82,6 +99,10 @@ const PROJECTS_DATA = [
         title: 'Campay',
         categoryBadge: 'UI/UX Design',
         tagline: 'University campus academic lifecycle design system',
+        problem: 'Campus academic journeys need consistent touchpoints.',
+        role: 'Product design',
+        approach: 'Designed academic workflows and UI in Figma.',
+        outcome: 'A design system for the campus academic lifecycle.',
         spec1: 'Figma UI/UX',
         spec2: 'Design System',
         pillTag: 'Figma UI',
@@ -96,6 +117,10 @@ const PROJECTS_DATA = [
         title: 'Fity',
         categoryBadge: 'Mobile UI/UX',
         tagline: 'Gamified workout & daily health tracking mobile UI',
+        problem: 'Fitness tracking needs a motivating daily routine.',
+        role: 'Product design',
+        approach: 'Designed gamified mobile flows and a prototype.',
+        outcome: 'A mobile prototype for workouts and daily tracking.',
         spec1: 'Figma · Proto',
         spec2: 'Mobile App',
         pillTag: 'Mobile App',
@@ -109,8 +134,12 @@ const PROJECTS_DATA = [
         number: '07',
         title: 'Bank Management System',
         categoryBadge: 'Core Systems',
-        tagline: 'High-security transaction ledger & account vault core',
-        spec1: 'C++ ',
+        tagline: 'C++ banking application for account and transaction management',
+        problem: 'Account activity needs clear transaction records.',
+        role: 'C++ development',
+        approach: 'Built account and ledger flows in C++.',
+        outcome: 'A bank management project for account tracking.',
+        spec1: 'C++',
         spec2: 'Banking Core',
         pillTag: 'C++ ',
         btnText: 'View Project',
@@ -145,6 +174,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
@@ -205,7 +235,6 @@ const BlackScreenContent = forwardRef((props, ref) => {
         };
 
         handleResize();
-        window.addEventListener('resize', handleResize);
 
         for (let i = 0; i < STAR_COUNT; i++) {
             stars.push(initStar({}));
@@ -241,13 +270,17 @@ const BlackScreenContent = forwardRef((props, ref) => {
             targetMouseX = normX * 120;
             targetMouseY = normY * 90;
         };
-        window.addEventListener('pointermove', handlePointerMove);
+        if (!prefersReducedMotion) {
+            window.addEventListener('pointermove', handlePointerMove);
+        }
 
         const handleWheel = (e) => {
             const delta = Math.abs(e.deltaY);
             targetSpeed = Math.min(28, targetSpeed + delta * 0.015);
         };
-        window.addEventListener('wheel', handleWheel, { passive: true });
+        if (!prefersReducedMotion) {
+            window.addEventListener('wheel', handleWheel, { passive: true });
+        }
 
         let lastTime = performance.now();
 
@@ -359,14 +392,24 @@ const BlackScreenContent = forwardRef((props, ref) => {
                 ctx.fill();
             }
 
-            animationFrameId = requestAnimationFrame(render);
+            if (!prefersReducedMotion) {
+                animationFrameId = requestAnimationFrame(render);
+            }
         };
 
         animationFrameId = requestAnimationFrame(render);
+        const handleMotionAwareResize = () => {
+            handleResize();
+            if (prefersReducedMotion) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = requestAnimationFrame(render);
+            }
+        };
+        window.addEventListener('resize', handleMotionAwareResize);
 
         return () => {
             cancelAnimationFrame(animationFrameId);
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleMotionAwareResize);
             window.removeEventListener('pointermove', handlePointerMove);
             window.removeEventListener('wheel', handleWheel);
         };
@@ -397,6 +440,11 @@ const BlackScreenContent = forwardRef((props, ref) => {
     // 3. Trigger Ending Vanish Transition function
     const triggerVanish = useCallback(() => {
         if (phase === 'vanishing' || phase === 'projects') return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setPhase('projects');
+            return;
+        }
+
         setPhase('vanishing');
         const timer = setTimeout(() => {
             setPhase('projects');
@@ -410,7 +458,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
 
         const timer = setTimeout(() => {
             triggerVanish();
-        }, 5000);
+        }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 5000);
 
         return () => clearTimeout(timer);
     }, [isEntered, phase, triggerVanish]);
@@ -516,7 +564,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
             const targetLeft = (cardRect.left - trackRect.left) + track.scrollLeft - (track.clientWidth / 2) + (targetCard.clientWidth / 2);
             track.scrollTo({
                 left: Math.max(0, targetLeft),
-                behavior: 'smooth'
+                behavior: getScrollBehavior()
             });
         }
     };
@@ -544,7 +592,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
         setTimeout(() => {
             const skillsEl = document.getElementById('skills-ecosystem-section');
             if (skillsEl) {
-                skillsEl.scrollIntoView({ behavior: 'smooth' });
+                skillsEl.scrollIntoView({ behavior: getScrollBehavior() });
             }
         }, 280);
     };
@@ -577,7 +625,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
             if (container) {
                 container.scrollTo({
                     top: container.scrollHeight,
-                    behavior: 'smooth',
+                    behavior: getScrollBehavior(),
                 });
             }
         };
@@ -683,7 +731,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     if (props.onScrollToTop) {
                                         props.onScrollToTop();
                                     } else {
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        window.scrollTo({ top: 0, behavior: getScrollBehavior() });
                                     }
                                 }}
                                 title="Sudhan - Home"
@@ -705,7 +753,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                         if (props.onScrollToTop) {
                                             props.onScrollToTop();
                                         } else {
-                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            window.scrollTo({ top: 0, behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -719,7 +767,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                             props.onNavigateToSection('about');
                                         } else {
                                             const el = document.getElementById('about');
-                                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                            if (el) el.scrollIntoView({ behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -730,7 +778,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     className="capsule-nav-link"
                                     onClick={() => {
                                         if (projectsContainerRef.current) {
-                                            projectsContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                                            projectsContainerRef.current.scrollIntoView({ behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -741,7 +789,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     className="capsule-nav-link"
                                     onClick={() => {
                                         const skillsEl = document.getElementById('skills-ecosystem-section');
-                                        if (skillsEl) skillsEl.scrollIntoView({ behavior: 'smooth' });
+                                        if (skillsEl) skillsEl.scrollIntoView({ behavior: getScrollBehavior() });
                                     }}
                                 >
                                     Skills
@@ -751,7 +799,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     className="capsule-nav-link"
                                     onClick={() => {
                                         const certEl = document.getElementById('certificates-scanner-section');
-                                        if (certEl) certEl.scrollIntoView({ behavior: 'smooth' });
+                                        if (certEl) certEl.scrollIntoView({ behavior: getScrollBehavior() });
                                     }}
                                 >
                                     Certifications
@@ -784,8 +832,9 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     type="button"
                                     className={`blackscreen-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                    aria-label="Toggle navigation menu"
+                                    aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                                     aria-expanded={mobileMenuOpen}
+                                    aria-controls="blackscreen-mobile-navigation"
                                     title="Toggle menu"
                                 >
                                     <span className="bs-toggle-bar" />
@@ -796,8 +845,13 @@ const BlackScreenContent = forwardRef((props, ref) => {
                         </header>
 
                         {/* Mobile Navigation Drawer */}
-                        <div className={`blackscreen-mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
-                            <nav className="blackscreen-mobile-nav">
+                        <div
+                            id="blackscreen-mobile-navigation"
+                            className={`blackscreen-mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}
+                            aria-hidden={!mobileMenuOpen}
+                            inert={!mobileMenuOpen}
+                        >
+                            <nav className="blackscreen-mobile-nav" aria-label="Mobile">
                                 <button
                                     type="button"
                                     className="bs-mobile-link"
@@ -806,7 +860,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                         if (props.onScrollToTop) {
                                             props.onScrollToTop();
                                         } else {
-                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            window.scrollTo({ top: 0, behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -821,7 +875,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                             props.onNavigateToSection('about');
                                         } else {
                                             const el = document.getElementById('about');
-                                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                            if (el) el.scrollIntoView({ behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -833,7 +887,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     onClick={() => {
                                         setMobileMenuOpen(false);
                                         if (projectsContainerRef.current) {
-                                            projectsContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                                            projectsContainerRef.current.scrollIntoView({ behavior: getScrollBehavior() });
                                         }
                                     }}
                                 >
@@ -845,7 +899,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     onClick={() => {
                                         setMobileMenuOpen(false);
                                         const skillsEl = document.getElementById('skills-ecosystem-section');
-                                        if (skillsEl) skillsEl.scrollIntoView({ behavior: 'smooth' });
+                                        if (skillsEl) skillsEl.scrollIntoView({ behavior: getScrollBehavior() });
                                     }}
                                 >
                                     Skills
@@ -856,7 +910,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     onClick={() => {
                                         setMobileMenuOpen(false);
                                         const certEl = document.getElementById('certificates-scanner-section');
-                                        if (certEl) certEl.scrollIntoView({ behavior: 'smooth' });
+                                        if (certEl) certEl.scrollIntoView({ behavior: getScrollBehavior() });
                                     }}
                                 >
                                     Certifications
@@ -932,12 +986,12 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                     <article
                                         key={project.id}
                                         className={`reference-style-card ${idx === activeCardIndex ? 'active' : ''}`}
-                                        onClick={() => setActiveCardIndex(idx)}
                                     >
                                         {/* Immersive Cover Background Image (Crystal clear on top) */}
                                         <div
                                             className="card-bg-cover-image"
                                             style={{ backgroundImage: `url(${project.image})` }}
+                                            aria-hidden="true"
                                         >
                                             <div className="card-bg-dark-gradient" />
                                         </div>
@@ -981,6 +1035,25 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                                 </div>
                                             </div>
 
+                                            <dl className="case-study-summary" aria-label={`${project.title} case study`}>
+                                                <div>
+                                                    <dt>Problem</dt>
+                                                    <dd>{project.problem}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>My role</dt>
+                                                    <dd>{project.role}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Approach</dt>
+                                                    <dd>{project.approach}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Outcome</dt>
+                                                    <dd>{project.outcome}</dd>
+                                                </div>
+                                            </dl>
+
                                             {/* Bottom Action Row: Sources Button on Left (except UI/UX), View Button on Right */}
                                             <div className="card-reference-bottom-row">
                                                 {project.sourceLink && (
@@ -989,6 +1062,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                                         target="_blank"
                                                         rel="noreferrer"
                                                         className="card-source-glass-btn"
+                                                        aria-label={`View source code for ${project.title}`}
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         <span>Sources</span>
@@ -999,6 +1073,7 @@ const BlackScreenContent = forwardRef((props, ref) => {
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className={`card-reserve-white-btn ${!project.sourceLink ? 'full-length' : ''}`}
+                                                    aria-label={`${project.btnText}: ${project.title}`}
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     <span>{project.btnText}</span>

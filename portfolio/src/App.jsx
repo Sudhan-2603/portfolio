@@ -1,75 +1,64 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import LoadingScreen from './components/LoadingScreen';
 import BlackScreenContent from './components/BlackScreen/BlackScreenContent';
+import { getScrollBehavior } from './lib/utils';
 import logoImg from './assets/Logo-trans.png';
-import aboutAvatarImg from './assets/about_avatar.png';
+import aboutAvatarImg from './assets/about_avatar.jpg';
 import resumePdf from './assets/certificate/resume.PDF';
 import './style/gsap/gsap.css';
 
 
 export default function App() {
-    const [isLoading, setIsLoading] = useState(true);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('hero');
 
-    // Draggable logo state (morphs to circle & spins clockwise on drag)
-    const [isDraggingLogo, setIsDraggingLogo] = useState(false);
-    const [logoPos, setLogoPos] = useState({ x: 0, y: 0 });
-    const dragStartRef = useRef({ x: 0, y: 0 });
-
-    const handleLogoPointerDown = (e) => {
-        e.currentTarget.setPointerCapture(e.pointerId);
-        dragStartRef.current = {
-            x: e.clientX - logoPos.x,
-            y: e.clientY - logoPos.y,
-        };
-        setIsDraggingLogo(true);
-    };
-
-    const handleLogoPointerMove = (e) => {
-        if (!isDraggingLogo) return;
-        setLogoPos({
-            x: e.clientX - dragStartRef.current.x,
-            y: e.clientY - dragStartRef.current.y,
-        });
-    };
-
-    const handleLogoPointerUp = () => {
-        setIsDraggingLogo(false);
-        // Smooth spring back to initial position
-        setLogoPos({ x: 0, y: 0 });
-    };
-
-    // Headline with two distinct lines:
-    // Line 1: We don't just Think. (Think highlighted in #3D5EE1)
-    // Line 2: We Do. (Do highlighted in #3D5EE1)
-    const headlineLine1 = [
-        { text: "We", isAccent: false },
-        { text: "don't", isAccent: false },
-        { text: "just", isAccent: false },
-        { text: "Think.", isAccent: true },
-    ];
-
-    const headlineLine2 = [
-        { text: "We", isAccent: false },
-        { text: "Do.", isAccent: true },
-    ];
-
-    // States for triggering entry animations
-    const [heroTitleVisible, setHeroTitleVisible] = useState(false);
     const [aboutBulletsVisible, setAboutBulletsVisible] = useState(false);
     const bulletListRef = useRef(null);
 
-    // Trigger hero editorial title linear down-to-up entry animation when loading completes
+    useLayoutEffect(() => {
+        document.getElementById('portfolio-prerender')?.remove();
+    }, []);
+
     useEffect(() => {
-        if (!isLoading) {
-            const timer = setTimeout(() => {
-                setHeroTitleVisible(true);
-            }, 100);
-            return () => clearTimeout(timer);
-        }
-    }, [isLoading]);
+        const sections = [
+            ['hero', 'hero'],
+            ['about', 'about'],
+            ['circle-transition', 'projects'],
+            ['skills-ecosystem-section', 'skills'],
+        ];
+        let sectionObserver;
+
+        const observeSections = () => {
+            sectionObserver?.disconnect();
+            if (typeof IntersectionObserver === 'undefined') return;
+
+            const targets = sections
+                .map(([id, name]) => ({ element: document.getElementById(id), name }))
+                .filter(({ element }) => element);
+
+            sectionObserver = new IntersectionObserver((entries) => {
+                const activeEntry = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+                if (activeEntry) {
+                    const section = targets.find(({ element }) => element === activeEntry.target);
+                    if (section) setActiveSection(section.name);
+                }
+            }, { rootMargin: '-20% 0px -65% 0px' });
+
+            targets.forEach(({ element }) => sectionObserver.observe(element));
+        };
+
+        observeSections();
+        const mutationObserver = new MutationObserver(observeSections);
+        mutationObserver.observe(document.querySelector('.portfolio-app'), { childList: true, subtree: true });
+
+        return () => {
+            sectionObserver?.disconnect();
+            mutationObserver.disconnect();
+        };
+    }, []);
 
     // Trigger about section professional summary bullet list linear left-to-right entry animation on scroll
     useEffect(() => {
@@ -118,8 +107,6 @@ export default function App() {
 
     // GSAP ScrollTrigger: Black circle set at center -> scales larger based on scroll -> fills full screen into black screen -> reveals BlackScreenContent & pans horizontal projects
     useEffect(() => {
-        if (isLoading) return;
-
         gsap.registerPlugin(ScrollTrigger);
 
         const timer = setTimeout(() => {
@@ -249,18 +236,16 @@ export default function App() {
         }, 120);
 
         return () => clearTimeout(timer);
-    }, [isLoading]);
+    }, []);
 
 
     // Professional Summary bullet points for character-by-character animation
     const professionalSummaryBullets = [
-        "Innovative and user-centric UI/UX Designer and Web/App Developer bridging the gap between design concepts and functional code.",
-        "Proficient in crafting intuitive user experiences through high-fidelity wireframing and prototyping in Figma.",
-        "Experienced in seamlessly translating designs into high-performing digital products using Visual Studio and GitHub.",
-        "Adept at leveraging Zoho Creator, Zoho CRM, Zoho Catalyst and Zoho products to develop responsive web and mobile applications, automate business workflows, streamline customer relationship management, and deliver scalable, user-friendly digital solutions within the Zoho ecosystem.",
+        "Design web and mobile interfaces in Figma, from wireframes to prototypes.",
+        "Turn Figma designs into responsive React interfaces with reusable components.",
+        "Build web apps with JavaScript, Firebase, and the Zoho platform.",
+        "Work across product design and frontend implementation, from user flows through delivery.",
     ];
-
-    let globalCharIndex = 0;
 
     // Smooth navigation to Get In Touch section across all screen states
     const handleNavigateToContact = (e) => {
@@ -273,7 +258,7 @@ export default function App() {
             const targetScroll = transitionSection.offsetTop + window.innerHeight * 1.85;
             window.scrollTo({
                 top: targetScroll,
-                behavior: 'smooth',
+                behavior: getScrollBehavior(),
             });
         }
 
@@ -283,40 +268,24 @@ export default function App() {
 
     return (
         <>
-            {isLoading && (
-                <LoadingScreen onComplete={() => setIsLoading(false)} />
-            )}
-
             {/* Main Portfolio Application */}
             <div className="portfolio-app">
                 {/* Navigation Bar */}
                 <header className="navbar">
                     <div className="navbar-container">
                         <div className="navbar-left">
-                            <a href="#hero" className="navbar-logo" onClick={(e) => isDraggingLogo && e.preventDefault()}>
-                                {/* Draggable Logo Badge: Morphs into circle & spins clockwise on drag */}
-                                <div
-                                    className={`logo-badge ${isDraggingLogo ? 'dragging' : ''}`}
-                                    style={{
-                                        transform: `translate(${logoPos.x}px, ${logoPos.y}px)`,
-                                        transition: isDraggingLogo ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                                    }}
-                                    onPointerDown={handleLogoPointerDown}
-                                    onPointerMove={handleLogoPointerMove}
-                                    onPointerUp={handleLogoPointerUp}
-                                    onPointerCancel={handleLogoPointerUp}
-                                    title="Drag me! Background turns into a circle & logo rotates clockwise"
-                                >
+                            <a href="#hero" className="navbar-logo">
+                                <div className="logo-badge">
                                     <img src={logoImg} alt="Sudhan Logo" />
                                 </div>
                                 <span>Sudhan</span>
                             </a>
 
-                            <nav className="navbar-links">
-                                <a href="#hero" className="navbar-link">Home</a>
-                                <a href="#about" className="navbar-link">About</a>
-                                <a href="#projects" className="navbar-link">Projects</a>
-                                <a href="#skills" className="navbar-link">Skills</a>
+                            <nav className="navbar-links" aria-label="Primary">
+                                <a href="#hero" className={`navbar-link ${activeSection === 'hero' ? 'active' : ''}`} aria-current={activeSection === 'hero' ? 'location' : undefined}>Home</a>
+                                <a href="#about" className={`navbar-link ${activeSection === 'about' ? 'active' : ''}`} aria-current={activeSection === 'about' ? 'location' : undefined}>About</a>
+                                <a href="#projects" className={`navbar-link ${activeSection === 'projects' ? 'active' : ''}`} aria-current={activeSection === 'projects' ? 'location' : undefined}>Projects</a>
+                                <a href="#skills-ecosystem-section" className={`navbar-link ${activeSection === 'skills' ? 'active' : ''}`} aria-current={activeSection === 'skills' ? 'location' : undefined}>Skills</a>
                             </nav>
                         </div>
 
@@ -344,8 +313,9 @@ export default function App() {
                             <button
                                 className={`navbar-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                aria-label="Toggle navigation menu"
+                                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                                 aria-expanded={mobileMenuOpen}
+                                aria-controls="primary-mobile-navigation"
                                 title="Toggle navigation menu"
                             >
                                 <span className="toggle-bar" />
@@ -356,12 +326,17 @@ export default function App() {
                     </div>
 
                     {/* Mobile Navigation Drawer */}
-                    <div className={`navbar-mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-                        <nav className="navbar-mobile-nav">
-                            <a href="#hero" className="navbar-mobile-link" onClick={() => setMobileMenuOpen(false)}>Home</a>
-                            <a href="#about" className="navbar-mobile-link" onClick={() => setMobileMenuOpen(false)}>About</a>
-                            <a href="#projects" className="navbar-mobile-link" onClick={() => setMobileMenuOpen(false)}>Projects</a>
-                            <a href="#skills" className="navbar-mobile-link" onClick={() => setMobileMenuOpen(false)}>Skills</a>
+                    <div
+                        id="primary-mobile-navigation"
+                        className={`navbar-mobile-menu ${mobileMenuOpen ? 'open' : ''}`}
+                        aria-hidden={!mobileMenuOpen}
+                        inert={!mobileMenuOpen}
+                    >
+                        <nav className="navbar-mobile-nav" aria-label="Mobile">
+                            <a href="#hero" className="navbar-mobile-link" aria-current={activeSection === 'hero' ? 'location' : undefined} onClick={() => setMobileMenuOpen(false)}>Home</a>
+                            <a href="#about" className="navbar-mobile-link" aria-current={activeSection === 'about' ? 'location' : undefined} onClick={() => setMobileMenuOpen(false)}>About</a>
+                            <a href="#projects" className="navbar-mobile-link" aria-current={activeSection === 'projects' ? 'location' : undefined} onClick={() => setMobileMenuOpen(false)}>Projects</a>
+                            <a href="#skills-ecosystem-section" className="navbar-mobile-link" aria-current={activeSection === 'skills' ? 'location' : undefined} onClick={() => setMobileMenuOpen(false)}>Skills</a>
                             <div className="navbar-mobile-divider" />
                             <a
                                 href={resumePdf}
@@ -391,73 +366,25 @@ export default function App() {
                     <section id="hero" className="hero-section">
                         <div className="hero-container">
                             {/* Top Announcement Pill with #3D5EE1 Blinking Dot */}
-                            <div className="hero-announcement-pill" title="Hover to see the blink effect!">
+                            <div className="hero-announcement-pill">
                                 <span className="announcement-dot" />
-                                <span>Open for new opportunities &middot; Full-Stack &amp; UI/UX</span>
+                                <span>UI/UX Designer + Frontend Developer &middot; Open to opportunities</span>
                             </div>
 
-                            {/* Editorial Serif Main Headline: Two distinct lines with linear down-to-up character entry animation */}
-                            <h1 className={`hero-editorial-title ${heroTitleVisible ? 'animate-entry' : ''}`}>
-                                {/* Line 1: We don't just Think. */}
-                                <div className="hero-title-line">
-                                    {headlineLine1.map((wordObj, wIdx) => {
-                                        const chars = wordObj.text.split('');
-                                        return (
-                                            <span key={wIdx} className="hero-word">
-                                                {chars.map((char, cIdx) => {
-                                                    const delay = 0.12 + (globalCharIndex++) * 0.035;
-                                                    return (
-                                                        <span
-                                                            key={cIdx}
-                                                            className={`hero-char ${wordObj.isAccent ? 'accent' : ''}`}
-                                                            style={{ animationDelay: `${delay.toFixed(3)}s` }}
-                                                        >
-                                                            {char}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </span>
-                                        );
-                                    })}
-                                </div>
-
-                                {/* Line 2: We Do. */}
-                                <div className="hero-title-line">
-                                    {headlineLine2.map((wordObj, wIdx) => {
-                                        const chars = wordObj.text.split('');
-                                        return (
-                                            <span key={wIdx} className="hero-word">
-                                                {chars.map((char, cIdx) => {
-                                                    const delay = 0.12 + (globalCharIndex++) * 0.035;
-                                                    return (
-                                                        <span
-                                                            key={cIdx}
-                                                            className={`hero-char ${wordObj.isAccent ? 'accent' : ''}`}
-                                                            style={{ animationDelay: `${delay.toFixed(3)}s` }}
-                                                        >
-                                                            {char}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </span>
-                                        );
-                                    })}
-                                </div>
+                            <h1 className="hero-editorial-title">
+                                I design and build responsive web products.
                             </h1>
 
-                            {/* Subtitle Description */}
                             <p className="hero-subtitle-text">
-                                Sudharsan K is a UI/UX designer and frontend developer creating intuitive digital products with Figma and React—from thoughtful interface design to responsive web experiences.
+                                I turn Figma flows into responsive React interfaces, bringing product design and frontend implementation together.
                             </p>
 
-                            {/* Hero CTA Button: Only "Explore my project" */}
                             <div className="hero-cta-group">
-                                <a
-                                    href="#projects"
-                                    className="hero-explore-btn"
-                                    title="Explore my project"
-                                >
-                                    <span>Explore my project</span>
+                                <a href="#projects" className="hero-explore-btn">
+                                    <span>View selected work</span>
+                                </a>
+                                <a className="hero-email-link" href="mailto:sudharsan@sudhan.website">
+                                    Email me
                                 </a>
                             </div>
 
@@ -468,7 +395,7 @@ export default function App() {
                                     <div className="avatar-circle avatar-2">UI</div>
                                     <div className="avatar-circle avatar-3">3D</div>
                                 </div>
-                                <span className="hero-proof-text">5+ Trusted projects &middot; Creative Engineering</span>
+                                <span className="hero-proof-text">7 selected projects &middot; Design + React</span>
                             </div>
                         </div>
                     </section>
@@ -764,13 +691,13 @@ export default function App() {
                             {/* Dedicated Full-Screen Black Screen Contents Component */}
                             <BlackScreenContent
                                 ref={blackScreenContentRef}
-                                onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                                onScrollToTop={() => window.scrollTo({ top: 0, behavior: getScrollBehavior() })}
                                 onNavigateToSection={(sectionId) => {
                                     const el = document.getElementById(sectionId);
                                     if (el) {
-                                        el.scrollIntoView({ behavior: 'smooth' });
+                                        el.scrollIntoView({ behavior: getScrollBehavior() });
                                     } else {
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        window.scrollTo({ top: 0, behavior: getScrollBehavior() });
                                     }
                                 }}
                             />

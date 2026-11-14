@@ -1,43 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './GetInTouchSection.css';
 import LiquidMetalButton from '../ui/LiquidMetal';
+import { getScrollBehavior } from '../../lib/utils';
 import logoImg from '../../assets/Logo-trans.png';
 import resumePdf from '../../assets/certificate/resume.PDF';
-
-const TITLES = [
-  {
-    type: 'get-in-touch',
-    render: () => (
-      <>
-        <span className="title-word-blue">Get</span> in <span className="title-word-green-punk">touch</span>
-      </>
-    ),
-  },
-  {
-    type: 'join-with-me',
-    render: () => (
-      <>
-        <span className="title-word-red">Join</span> with me
-      </>
-    ),
-  },
-  {
-    type: 'connect-with-me',
-    render: () => (
-      <>
-        <span className="title-word-punk">Connect</span> with me
-      </>
-    ),
-  },
-];
 
 /**
  * GetInTouchSection
  * 
  * 1. Dedicated Floating White Theme Headerbar at top (black screen headerbar removed).
- * 2. Rotating titles: 'Get'-Blue, 'Join'-Red, 'Touch'-Green punk, with fade-up animation.
+ * 2. A clear, static contact headline, with fade-up animation.
  * 3. Email: sudharsan@sudhan.website everywhere.
- * 4. Social cards with SVG logos: GitHub, LinkedIn, Behance, Dribbble, Instagram.
+ * 4. Social cards with labeled links to active profiles.
  * 5. Contact form with heavy frosted glass blur (backdrop-filter: blur(44px)).
  * 6. Send button with white icon background, black icon, and hover inverting to white body.
  * 7. GPay payment successful animation with expanding ripple rings, drawing checkmark & confetti.
@@ -45,30 +19,24 @@ const TITLES = [
  * 9. Strictly Zero Borders Rule (border: none !important).
  */
 export default function GetInTouchSection({ onScrollToTop }) {
-  const [titleIndex, setTitleIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Cycle titles every 2.8s
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTitleIndex((prev) => (prev + 1) % TITLES.length);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setSubmitError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+    setSubmitError('');
 
     try {
-      await fetch('https://formspree.io/f/xykbjlzj', {
+      const response = await fetch('https://formspree.io/f/xykbjlzj', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,16 +48,20 @@ export default function GetInTouchSection({ onScrollToTop }) {
           message: formData.message,
         }),
       });
-    } catch (err) {
-      console.warn('Formspree submission fallback:', err);
-    }
 
-    // Trigger GPay-style celebration
-    setIsSuccess(true);
+      if (!response.ok) {
+        throw new Error(`Contact form request failed with status ${response.status}`);
+      }
+
+      setIsSuccess(true);
+    } catch {
+      setSubmitError('Your message could not be sent. Please use the email link below.');
+    }
   };
 
   const handleReset = () => {
     setIsSuccess(false);
+    setSubmitError('');
     setFormData({ name: '', email: '', message: '' });
   };
 
@@ -98,7 +70,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
     if (onScrollToTop) {
       onScrollToTop();
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: getScrollBehavior() });
     }
   };
 
@@ -107,9 +79,9 @@ export default function GetInTouchSection({ onScrollToTop }) {
     const scrollContainer = document.querySelector('.blackscreen-scroll-container');
     const el = document.getElementById(targetId);
     if (scrollContainer && el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: getScrollBehavior() });
     } else if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: getScrollBehavior() });
     }
   };
 
@@ -118,7 +90,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
     setMobileMenuOpen(false);
     const formCard = document.getElementById('contact-form') || document.querySelector('.contact-form-card') || document.querySelector('.get-in-touch-main');
     if (formCard) {
-      formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      formCard.scrollIntoView({ behavior: getScrollBehavior(), block: 'start' });
       const nameInput = document.getElementById('contact-name');
       if (nameInput) {
         setTimeout(() => nameInput.focus(), 450);
@@ -130,17 +102,6 @@ export default function GetInTouchSection({ onScrollToTop }) {
     <section className="get-in-touch-wrapper" id="contact">
       {/* Immersive Blue-Hour Meadow Background spanning grid & footer */}
       <div className="meadow-backdrop-container" aria-hidden="true">
-        <video
-          className="meadow-backdrop-video"
-          src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4d01c727-d9c5-47c8-a778-35a451ffd39f.mp4"
-          poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261014_121838_c97d0940-f430-4304-8573-4f47ee44f447.png"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-        {/* Soft top haze blending into paper/white */}
         <div className="meadow-top-haze" />
       </div>
 
@@ -148,18 +109,17 @@ export default function GetInTouchSection({ onScrollToTop }) {
       <header className="white-capsule-header">
         <div className="white-capsule-bar">
           {/* Brand */}
-          <div
+          <button
+            type="button"
             className="white-capsule-brand"
             onClick={handleBackToTop}
-            role="button"
-            tabIndex={0}
-            title="Sudhan - Back to Top"
+            aria-label="Sudhan home"
           >
             <div className="white-capsule-logo">
               <img src={logoImg} alt="Sudhan Logo" />
             </div>
             <span className="white-capsule-name">Sudhan</span>
-          </div>
+          </button>
 
           {/* Navigation Links */}
           <nav className="white-capsule-links">
@@ -208,8 +168,9 @@ export default function GetInTouchSection({ onScrollToTop }) {
               type="button"
               className={`white-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle navigation menu"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
+              aria-controls="contact-mobile-navigation"
               title="Toggle navigation menu"
             >
               <span className="white-toggle-bar" />
@@ -220,7 +181,12 @@ export default function GetInTouchSection({ onScrollToTop }) {
         </div>
 
         {/* Mobile Navigation Drawer with Animated Underline */}
-        <div className={`white-mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+        <div
+          id="contact-mobile-navigation"
+          className={`white-mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}
+          aria-hidden={!mobileMenuOpen}
+          inert={!mobileMenuOpen}
+        >
           <nav className="white-mobile-nav">
             <button
               type="button"
@@ -296,9 +262,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
 
             {/* Rotating Title with Fade-Up Animation and Dynamic Colors */}
             <div className="title-fadeup-viewport">
-              <h1 key={titleIndex} className="title-fadeup-text">
-                {TITLES[titleIndex].render()}
-              </h1>
+              <h1 className="title-fadeup-text">Let's talk about your next project.</h1>
             </div>
 
             {/* Requested Opportunity Paragraph */}
@@ -318,7 +282,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
             </div>
 
             {/* Social Logos and Links (GitHub, LinkedIn, Behance, Dribbble, Instagram) */}
-            <div className="social-links-grid" aria-label="Social Profiles">
+            <nav className="social-links-grid" aria-label="Social profiles">
               {/* GitHub */}
               <a
                 href="https://github.com/Sudhan-2603"
@@ -386,24 +350,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
                 <span>Dribbble</span>
               </a>
 
-              {/* Instagram */}
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="social-logo-card"
-                title="Instagram"
-              >
-                <div className="social-icon-box">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                  </svg>
-                </div>
-                <span>Instagram</span>
-              </a>
-            </div>
+            </nav>
           </div>
 
           {/* Right Column: Contact Form with Heavy Frosted Glass Blur & GPay Animation */}
@@ -436,8 +383,8 @@ export default function GetInTouchSection({ onScrollToTop }) {
                   </div>
 
                   <h3 className="gpay-success-title">Message Sent!</h3>
-                  <p className="gpay-success-subtitle">
-                    Thank you, <strong>{formData.name}</strong>! Your inquiry has been delivered directly to <strong>sudharsan@sudhan.website</strong>.
+                  <p className="gpay-success-subtitle" role="status" aria-live="polite">
+                    Thanks, <strong>{formData.name}</strong>. Your message was submitted successfully. I'll get back to you soon.
                   </p>
 
                   <button type="button" onClick={handleReset} className="gpay-new-msg-btn">
@@ -501,6 +448,13 @@ export default function GetInTouchSection({ onScrollToTop }) {
                       />
                     </div>
 
+                    {submitError && (
+                      <p className="contact-form-error" role="alert">
+                        {submitError}{' '}
+                        <a href="mailto:sudharsan@sudhan.website">Email Sudharsan</a>
+                      </p>
+                    )}
+
                     {/* Submit Button with LiquidMetalButton */}
                     <div className="form-submit-row">
                       <LiquidMetalButton
@@ -535,7 +489,7 @@ export default function GetInTouchSection({ onScrollToTop }) {
       </div>
 
       {/* Footer Stage: Giant Frosted-Glass "Sudhan" Wordmark Sinking into Lavender Fog */}
-      <footer className="footer-meadow-base" aria-hidden="true" onClick={handleBackToTop}>
+      <footer className="footer-meadow-base" aria-hidden="true">
         <p className="meadow-wordmark">
           Sudhan
         </p>

@@ -11,7 +11,6 @@
 /* 2. Layout Elements */
 @import './navbar/navbar.css';
 @import './footer/footer.css';
-@import './loading/loading.css';
 
 /* 3. Portfolio Sections */
 @import './hero/hero.css';
